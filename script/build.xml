@@ -3,7 +3,6 @@
 <project basedir=".." default="all" name="express">
 	<target name="init">
 		<property name="JAR_FILE" value="build/expresslib.jar"/>
-		<property name="CONSTANTS_FILE" value="SchemConstants"/>
 		<property name="SRC_BUNDLE" value="expresslib-src.zip"/>
 	</target>
 	
@@ -22,7 +21,6 @@
 	
 	<target name="src" depends="init" description="builds a src archive">
 		<delete file="build/${SRC_BUNDLE}"/>
-		
 		<zip destfile="build/${SRC_BUNDLE}">
 			<fileset dir=".">
 				<include name="src/**"/>

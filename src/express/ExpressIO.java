@@ -69,6 +69,9 @@ public class ExpressIO {
 		k = k | key;
 		l = l ^ k;
 		l = l & 0xFFFFFF;
+		// handle sign
+		if((l & 0x800000) != 0)
+			l = l | 0xFF000000;
 		return l;
 	}
 

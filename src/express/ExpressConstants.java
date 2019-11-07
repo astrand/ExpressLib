@@ -11,8 +11,8 @@ public interface ExpressConstants {
 	public static final int DIRECTION_270 = 4;
 	
 	// font style
-	public static final int FONT_PLAIN = 0; 
-	public static final int FONT_BOLD = 1; 
+	public static final int FONT_PLAIN = 1; 
+	public static final int FONT_BOLD = 2; 
 	
 	// arc shapes
 	public static final int CIRCLE_360 = 1;
