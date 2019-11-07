@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="all" name="express">
+	<target name="init">
+		<property name="JAR_FILE" value="build/expresslib.jar"/>
+		<property name="CONSTANTS_FILE" value="SchemConstants"/>
+		<property name="SRC_BUNDLE" value="expresslib-src.zip"/>
+	</target>
+	
+	<target name="jar" depends="init" description="compiles and builds the library">
+		<delete dir="build/*"/>
+		<mkdir dir="build/tmp"/>
+		<javac classpath="." source="1.4" target="1.4" srcdir="src" destdir="build/tmp" includes="**/*.java"/>
+		<jar basedir="build/tmp" compress="true" jarfile="${JAR_FILE}">
+			<manifest>
+				<attribute name="Main-Class" value="express.sch.importer.Test"/>
+			</manifest>
+			<include name="**"/>
+		</jar>
+		<delete dir="build/tmp"/>
+	</target>
+	
+	<target name="src" depends="init" description="builds a src archive">
+		<delete file="build/${SRC_BUNDLE}"/>
+		
+		<zip destfile="build/${SRC_BUNDLE}">
+			<fileset dir=".">
+				<include name="src/**"/>
+				<include name="script/**"/>
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="all" depends="jar,src" description="does it all">
+	</target>
+</project>
