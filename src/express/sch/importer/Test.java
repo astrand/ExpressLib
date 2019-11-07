@@ -18,7 +18,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 
 import express.sch.objects.Circuit;
-import express.sch.objects.Component;
+import express.sch.objects.CompoundObject;
 
 
 /**
@@ -74,7 +74,7 @@ public class Test {
 			File file = fc.getSelectedFile();
 			ExpressSchReader reader = new ExpressSchReader();
 			try {
-				Component component = reader.readComponent(file);
+				CompoundObject component = reader.readCompoundObject(file);
 				JTree tree = new JTree(component);
 				JScrollPane sp = new JScrollPane(tree);
 				tp.add(file.getName(), sp);

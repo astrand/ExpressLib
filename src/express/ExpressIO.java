@@ -1,7 +1,7 @@
 package express;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class contains the basic i/o routines for reading expresssch/expresspcb files.
@@ -28,7 +28,7 @@ public class ExpressIO {
 	 * @return one byte of decrypted data
 	 * @throws IOException
 	 */
-	public int read1(FileInputStream fis) throws IOException {
+	public int read1(InputStream fis) throws IOException {
 		int l = fis.read();
 		key = nextRandomNumber(key);
 		l = l ^ key;
@@ -42,7 +42,7 @@ public class ExpressIO {
 	 * @return two bytes of decrypted data, packed in an int
 	 * @throws IOException
 	 */
-	public int read2(FileInputStream fis) throws IOException {
+	public int read2(InputStream fis) throws IOException {
 		int l1 = fis.read();
 		int l2 = fis.read();
 		int l = (l2 << 8) | l1;
@@ -58,7 +58,7 @@ public class ExpressIO {
 	 * @return three bytes of decrypted data, packed in an int
 	 * @throws IOException
 	 */
-	public int read3(FileInputStream fis) throws IOException {
+	public int read3(InputStream fis) throws IOException {
 		int l1 = fis.read();
 		int l2 = fis.read();
 		int l3 = fis.read();

@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,7 +16,7 @@ import express.ExpressIO;
 import express.sch.objects.Circle;
 import express.sch.objects.Circuit;
 import express.sch.objects.CircuitObject;
-import express.sch.objects.Component;
+import express.sch.objects.CompoundObject;
 import express.sch.objects.Line;
 import express.sch.objects.Pin;
 import express.sch.objects.Rectangle;
@@ -73,14 +74,24 @@ public class ExpressSchReader implements ExpressConstants {
 	 * @return the contents of the file
 	 * @throws IOException
 	 */
-	public synchronized Component readComponent(File file) throws IOException {
-		// open file
-		FileInputStream fis = new FileInputStream(file);
+	public synchronized CompoundObject readCompoundObject(File file) throws IOException {
+		return readCompoundObject(new FileInputStream(file));
+	}
 
+	/**
+	 * Reads the contents of a .s file from the stream and returns a Component object representing the contents
+	 * of that stream
+	 * 
+	 * @param is
+	 *            the contents of a component file
+	 * @return the contents of the file
+	 * @throws IOException
+	 */
+	public synchronized CompoundObject readCompoundObject(InputStream is) throws IOException {
 		// read header
-		readHeader(fis);
+		readHeader(is);
 		// read random seed
-		initIO(fis);
+		initIO(is);
 
 		// reset temporary values
 		reset();
@@ -90,12 +101,12 @@ public class ExpressSchReader implements ExpressConstants {
 
 		try {
 			// read values until exception occurs
-			readComponents(fis);
+			readComponents(is);
 		} catch (UnsupportedOperationException ex) {
 		}
 
 		// return the one component on the sheet
-		return (Component) currentSheet.getChildAt(0);
+		return (CompoundObject) currentSheet.getChildAt(0);
 	}
 
 	/**
@@ -147,7 +158,7 @@ public class ExpressSchReader implements ExpressConstants {
 	 *            InputStream from which to read
 	 * @throws IOException
 	 */
-	protected void initIO(FileInputStream fis) throws IOException {
+	protected void initIO(InputStream fis) throws IOException {
 		// read and initialise random seed
 		// stored in file at position 27+28
 		int c1 = fis.read();
@@ -164,7 +175,7 @@ public class ExpressSchReader implements ExpressConstants {
 	 *            InputStream from which to read
 	 * @throws IOException
 	 */
-	protected void readHeader(FileInputStream fis) throws IOException {
+	protected void readHeader(InputStream fis) throws IOException {
 		// skip header
 		// purpose unknown
 		for (int i = 0; i < 26; i++)
@@ -180,14 +191,18 @@ public class ExpressSchReader implements ExpressConstants {
 	 * @return the file contents in a Circuit object
 	 * @throws IOException
 	 */
-	protected Circuit readComponents(FileInputStream fis) throws IOException {
+	protected Circuit readComponents(InputStream fis) throws IOException {
 		// create root node
 		Circuit circuit = new Circuit();
 
 		// read data from file until finished
 		while (true) {
-			if (DEBUG)
-				System.out.println("stream position: " + fis.getChannel().position());
+			if (DEBUG) {
+				try {
+					System.out.println("stream position: " + ((FileInputStream) fis).getChannel().position());
+				} catch(ClassCastException ex) {
+				}
+			}
 
 			// read identifier of following object
 			int objectId = io.read3(fis);
