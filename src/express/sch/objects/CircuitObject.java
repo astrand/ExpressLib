@@ -1,4 +1,4 @@
-package objects;
+package express.sch.objects;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 

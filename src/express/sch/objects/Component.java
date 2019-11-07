@@ -1,4 +1,4 @@
-package objects;
+package express.sch.objects;
 
 /**
  * Component object containing a number of objects that have been group together

@@ -1,4 +1,4 @@
-package objects;
+package express.sch.objects;
 
 /**
  * Attributes of a text object
